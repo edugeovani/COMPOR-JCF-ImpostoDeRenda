@@ -16,6 +16,7 @@ public class ImpostoDeRenda implements FachadaExperimento {
 
 	private String situaCpf;
 	private Map<Titular, List<FontePagadora>> mapaFontes = new HashMap<Titular, List<FontePagadora>>();
+	//private Map<List<Titular>, List<FontePagadora>> mapaFontes = new HashMap<List<Titular>, List<FontePagadora>>();
 	private List<Titular> titulares = new ArrayList<Titular>();
 	private List<FontePagadora> fontes = new ArrayList<FontePagadora>();
 	
@@ -51,8 +52,21 @@ public class ImpostoDeRenda implements FachadaExperimento {
 
 
 	public void criarFontePagadora(Titular titular, FontePagadora fonte) {
-		fontes.add(fonte);
-	mapaFontes.put(titular, fontes);
+		/* Primeira coisa, eu preciso pegar a fonte do titular, se já existir */
+		List<FontePagadora> fontesDoTitular = mapaFontes.get(titular);
+		
+		/* Verifico se existe, ou se é null */
+		if (fontesDoTitular == null) {
+			/* Se não existe, cria nova lista */
+			fontesDoTitular = new ArrayList<FontePagadora>();
+		}
+		/* Adiciona a nova fonte na nova lista, ou na lista que já existia */
+		fontesDoTitular.add(fonte);
+		
+		/* Devolvo ao mapa */
+		mapaFontes.put(titular, fontesDoTitular);
+		
+//		fontes.add(fonte);
 		
 	}
 
