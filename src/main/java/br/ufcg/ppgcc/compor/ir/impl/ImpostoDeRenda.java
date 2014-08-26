@@ -52,6 +52,18 @@ public class ImpostoDeRenda implements FachadaExperimento {
 
 
 	public void criarFontePagadora(Titular titular, FontePagadora fonte) {
+		if(fonte.getNome() == null){
+			throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
+		}
+		if(fonte.getCpfCnpj() == null){
+			throw new ExcecaoImpostoDeRenda("O campo CPF/CNPJ é obrigatório");
+		}
+		if(fonte.getRendimentoRecebidos() == 0){
+			throw new ExcecaoImpostoDeRenda("O campo rendimentos recebidos é obrigatório");
+		}
+		if(fonte.getRendimentoRecebidos() < 0){
+			throw new ExcecaoImpostoDeRenda("O campo rendimentos recebidos deve ser maior que zero");
+		}
 		/* Primeira coisa, eu preciso pegar a fonte do titular, se já existir */
 		List<FontePagadora> fontesDoTitular = mapaFontes.get(titular);
 		
