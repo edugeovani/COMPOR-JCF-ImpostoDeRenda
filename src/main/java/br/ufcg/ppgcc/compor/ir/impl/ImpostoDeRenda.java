@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.omg.CORBA.ExceptionList;
-
 import br.ufcg.ppgcc.compor.ir.Dependente;
 import br.ufcg.ppgcc.compor.ir.ExcecaoImpostoDeRenda;
 import br.ufcg.ppgcc.compor.ir.FachadaExperimento;
@@ -15,13 +13,9 @@ import br.ufcg.ppgcc.compor.ir.Titular;
 
 public class ImpostoDeRenda implements FachadaExperimento {
 
-	private String situaCpf;
 	private Map<Titular, List<FontePagadora>> mapaFontes = new HashMap<Titular, List<FontePagadora>>();
 	private Map<Titular, List<Dependente>> mapaDepen = new HashMap<Titular, List<Dependente>>();
-	//private Map<List<Titular>, List<FontePagadora>> mapaFontes = new HashMap<List<Titular>, List<FontePagadora>>();
 	private List<Titular> titulares = new ArrayList<Titular>();
-	private List<Dependente> dependentes = new ArrayList<Dependente>();
-	private List<FontePagadora> fontes = new ArrayList<FontePagadora>();
 	
 	public void criarNovoTitular(Titular titular) {
 		if(titular.getNome() == null){		
@@ -37,9 +31,9 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		if(titular.getCpf().length() != 14){		
 			throw new ExcecaoImpostoDeRenda("O campo CPF está inválido");			
 		}
-		    fontes = new ArrayList<FontePagadora>();
 			titulares.add(titular);
-			mapaFontes.put(titular, fontes);
+			mapaFontes.put(titular, new ArrayList<FontePagadora>());
+			mapaDepen.put(titular, new ArrayList<Dependente>());
 					
 
 	}
@@ -50,7 +44,6 @@ public class ImpostoDeRenda implements FachadaExperimento {
 
 
 	public List<FontePagadora> listarFontes(Titular titular) {
-		// TODO Auto-generated method stub
 		return mapaFontes.get(titular);
 	}
 
@@ -79,36 +72,36 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		if (fontesDoTitular == null) {
 			throw new ExcecaoImpostoDeRenda("Titular não cadastrado");
 			/* Se não existe, cria nova lista */
-			//fontesDoTitular = new ArrayList<FontePagadora>();
 		}
 		/* Adiciona a nova fonte na nova lista, ou na lista que já existia */
 		
 		fontesDoTitular.add(fonte);
-		//fontes.add(fonte);
-		
-		
-		
-			/* Devolvo ao mapa */
-		//mapaFontes.put(titular, fontes);
-		
-		
-		
-//		fontes.add(fonte);
-		
 	}
 
 	public void criarDependente(Titular titular, Dependente dependente) {
-		dependentes = new ArrayList<Dependente>();
-		dependentes.add(dependente);
+		
+		if(dependente.getCpf() == null){
+			throw new ExcecaoImpostoDeRenda("O campo CPF é obrigatório");
+		}
+		if(dependente.getNome() == null){
+			throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
+		}
+		if(dependente.getTipo() == 0){
+			throw new ExcecaoImpostoDeRenda("O campo tipo é obrigatório");
+		}
+		if(dependente.getTipo() < 0){
+			throw new ExcecaoImpostoDeRenda("O campo tipo é inválido");
+		}
+		if((dependente.getCpf() != null) && (dependente.getCpf().length()!= 14) ){
+			throw new ExcecaoImpostoDeRenda("O campo CPF é inválido");
+		}
+		
 		List<Dependente> dependentes1 = mapaDepen.get(titular);
-		if(dependentes1 != null){
-			mapaDepen.get(titular).add(dependente);
+		if(dependentes1 == null){
+			throw new ExcecaoImpostoDeRenda("Titular não cadastrado");
 		}
-		else{
-		mapaDepen.put(titular, dependentes);
-		}
-		
-		
+
+		dependentes1.add(dependente);
 	}
 
 	public List<Dependente> listarDependentes(Titular titular) {
