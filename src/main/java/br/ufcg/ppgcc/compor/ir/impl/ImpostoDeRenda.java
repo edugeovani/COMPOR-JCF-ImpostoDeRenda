@@ -74,6 +74,9 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		}
 		/* Adiciona a nova fonte na nova lista, ou na lista que já existia */
 		fontesDoTitular.add(fonte);
+		if((fonte.getCpfCnpj() != null) && (fonte.getCpfCnpj().length()!= 18)  ){
+			throw new ExcecaoImpostoDeRenda("O campo CPF/CNPJ é inválido");
+		}
 		
 		/* Devolvo ao mapa */
 		mapaFontes.put(titular, fontesDoTitular);
