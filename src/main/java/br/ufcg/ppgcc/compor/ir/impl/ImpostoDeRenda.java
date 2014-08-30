@@ -9,6 +9,7 @@ import br.ufcg.ppgcc.compor.ir.Dependente;
 import br.ufcg.ppgcc.compor.ir.ExcecaoImpostoDeRenda;
 import br.ufcg.ppgcc.compor.ir.FachadaExperimento;
 import br.ufcg.ppgcc.compor.ir.FontePagadora;
+import br.ufcg.ppgcc.compor.ir.Resultado;
 import br.ufcg.ppgcc.compor.ir.Titular;
 
 public class ImpostoDeRenda implements FachadaExperimento {
@@ -107,6 +108,10 @@ public class ImpostoDeRenda implements FachadaExperimento {
 	public List<Dependente> listarDependentes(Titular titular) {
 
 		return mapaDepen.get(titular);
+	}
+
+	public Resultado declaracaoCompleta(Titular titular) {
+		return new Resultado();
 	}
 
 	
