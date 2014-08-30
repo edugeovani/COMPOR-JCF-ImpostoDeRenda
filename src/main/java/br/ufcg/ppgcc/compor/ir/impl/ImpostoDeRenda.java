@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.omg.CORBA.ExceptionList;
 
+import br.ufcg.ppgcc.compor.ir.Dependente;
 import br.ufcg.ppgcc.compor.ir.ExcecaoImpostoDeRenda;
 import br.ufcg.ppgcc.compor.ir.FachadaExperimento;
 import br.ufcg.ppgcc.compor.ir.FontePagadora;
@@ -16,8 +17,10 @@ public class ImpostoDeRenda implements FachadaExperimento {
 
 	private String situaCpf;
 	private Map<Titular, List<FontePagadora>> mapaFontes = new HashMap<Titular, List<FontePagadora>>();
+	private Map<Titular, List<Dependente>> mapaDepen = new HashMap<Titular, List<Dependente>>();
 	//private Map<List<Titular>, List<FontePagadora>> mapaFontes = new HashMap<List<Titular>, List<FontePagadora>>();
 	private List<Titular> titulares = new ArrayList<Titular>();
+	private List<Dependente> dependentes = new ArrayList<Dependente>();
 	private List<FontePagadora> fontes = new ArrayList<FontePagadora>();
 	
 	public void criarNovoTitular(Titular titular) {
@@ -68,6 +71,7 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		}
 		/* Primeira coisa, eu preciso pegar a fonte do titular, se já existir */
 		List<FontePagadora> fontesDoTitular = mapaFontes.get(titular);
+		
 		if((fonte.getCpfCnpj() != null) && (fonte.getCpfCnpj().length()!= 18)  ){
 			throw new ExcecaoImpostoDeRenda("O campo CPF/CNPJ é inválido");
 		}
@@ -91,6 +95,25 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		
 //		fontes.add(fonte);
 		
+	}
+
+	public void criarDependente(Titular titular, Dependente dependente) {
+		dependentes = new ArrayList<Dependente>();
+		dependentes.add(dependente);
+		List<Dependente> dependentes1 = mapaDepen.get(titular);
+		if(dependentes1 != null){
+			mapaDepen.get(titular).add(dependente);
+		}
+		else{
+		mapaDepen.put(titular, dependentes);
+		}
+		
+		
+	}
+
+	public List<Dependente> listarDependentes(Titular titular) {
+
+		return mapaDepen.get(titular);
 	}
 
 	
