@@ -34,8 +34,9 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		if(titular.getCpf().length() != 14){		
 			throw new ExcecaoImpostoDeRenda("O campo CPF está inválido");			
 		}
-		
+		    fontes = new ArrayList<FontePagadora>();
 			titulares.add(titular);
+			mapaFontes.put(titular, fontes);
 					
 
 	}
@@ -52,6 +53,7 @@ public class ImpostoDeRenda implements FachadaExperimento {
 
 
 	public void criarFontePagadora(Titular titular, FontePagadora fonte) {
+		
 		if(fonte.getNome() == null){
 			throw new ExcecaoImpostoDeRenda("O campo nome é obrigatório");
 		}
@@ -66,20 +68,26 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		}
 		/* Primeira coisa, eu preciso pegar a fonte do titular, se já existir */
 		List<FontePagadora> fontesDoTitular = mapaFontes.get(titular);
-		
-		/* Verifico se existe, ou se é null */
-		if (fontesDoTitular == null) {
-			/* Se não existe, cria nova lista */
-			fontesDoTitular = new ArrayList<FontePagadora>();
-		}
-		/* Adiciona a nova fonte na nova lista, ou na lista que já existia */
-		fontesDoTitular.add(fonte);
 		if((fonte.getCpfCnpj() != null) && (fonte.getCpfCnpj().length()!= 18)  ){
 			throw new ExcecaoImpostoDeRenda("O campo CPF/CNPJ é inválido");
 		}
+		/* Verifico se existe, ou se é null */
+		if (fontesDoTitular == null) {
+			throw new ExcecaoImpostoDeRenda("Titular não cadastrado");
+			/* Se não existe, cria nova lista */
+			//fontesDoTitular = new ArrayList<FontePagadora>();
+		}
+		/* Adiciona a nova fonte na nova lista, ou na lista que já existia */
 		
-		/* Devolvo ao mapa */
-		mapaFontes.put(titular, fontesDoTitular);
+		fontesDoTitular.add(fonte);
+		//fontes.add(fonte);
+		
+		
+		
+			/* Devolvo ao mapa */
+		//mapaFontes.put(titular, fontes);
+		
+		
 		
 //		fontes.add(fonte);
 		
