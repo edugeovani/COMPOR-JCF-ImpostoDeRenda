@@ -111,7 +111,33 @@ public class ImpostoDeRenda implements FachadaExperimento {
 	}
 
 	public Resultado declaracaoCompleta(Titular titular) {
-		return new Resultado();
+		//FontePagadora fonte = new FontePagadora();
+		double redimentos = 0;
+		Resultado resultado = new Resultado();
+		List<FontePagadora> fontesDoTitular = mapaFontes.get(titular);
+		
+		for(FontePagadora fonte: fontesDoTitular)		{
+			redimentos = redimentos + fonte.getRendimentoRecebidos();
+		}
+		if((redimentos >= 19645.44) && (redimentos <=  29442)){
+			
+			resultado.setImpostoDevido((redimentos*0.075)-1473.36);
+		}
+		if((redimentos > 29442) && (redimentos <=  39256.56)){
+			
+			resultado.setImpostoDevido((redimentos*0.15)-3681.6);
+		}
+		if((redimentos > 39256.56) && (redimentos <=  49051.8)){
+			
+			resultado.setImpostoDevido((redimentos*0.225)-6625.8);
+		}
+		if(redimentos > 49051.8){
+			
+			resultado.setImpostoDevido((redimentos*0.275)-9078.36);
+		}
+		//resultado.setImpostoDevido(26.6);
+
+		return resultado;
 	}
 
 	
