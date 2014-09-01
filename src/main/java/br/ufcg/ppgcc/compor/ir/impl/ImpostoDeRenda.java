@@ -116,15 +116,17 @@ public class ImpostoDeRenda implements FachadaExperimento {
 		double redimentos = 0;
 		int listde = 0;
 		Resultado resultado = new Resultado();
+		
 		List<FontePagadora> fontesDoTitular = mapaFontes.get(titular);
 		List<Dependente> listdep = mapaDepen.get(titular);
 		
 		listde = listdep.size();
+		
 		for(FontePagadora fonte: fontesDoTitular)		{
 			redimentos = redimentos + fonte.getRendimentoRecebidos();
 		}
 		
-		redimentos = redimentos - (listde*1974.74);
+		redimentos = redimentos - (listde*1974.72);
 		
 		if((redimentos >= 19645.44) && (redimentos <=  29442)){
 			resultado.setImpostoDevido((redimentos*0.075)-1473.36);
